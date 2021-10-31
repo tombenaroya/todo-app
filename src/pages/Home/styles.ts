@@ -11,5 +11,4 @@ export const useStyles = makeStyles(theme => ({
   addButton: {
     marginLeft: theme.spacing(2),
   },
-  tasksList: {},
 }));
