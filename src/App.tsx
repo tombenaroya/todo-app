@@ -11,7 +11,7 @@ export const App = () => {
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>
-          <Route component={Home} exact path="/home" />
+          <Route exact path="/home" component={Home} />
         </Switch>
       </Router>
     </>

@@ -11,4 +11,12 @@ export const useStyles = makeStyles(theme => ({
   addButton: {
     marginLeft: theme.spacing(2),
   },
+  completedTasks: {
+    marginLeft: theme.spacing(2),
+  },
+  search: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: theme.spacing(1),
+  },
 }));

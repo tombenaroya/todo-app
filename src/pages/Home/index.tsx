@@ -1,26 +1,18 @@
+import { AddTodo } from '@/components/AddTodo';
 import { TodoContainer } from '@/components/TodoContainer';
 import { Todo as Task, todoAction } from '@/types/Todo';
-import { Button, Container, Grid, List, TextField } from '@material-ui/core';
-import { ChangeEvent, useState } from 'react';
+import { Container, Grid, List, TextField, Typography } from '@material-ui/core';
+import { ChangeEvent, FC, useState } from 'react';
 import { useStyles } from './styles';
 
-export const Home = () => {
+export const Home: FC = () => {
   const classes = useStyles();
 
-  const [input, setInput] = useState('');
-  const [todos, setTodos] = useState<Task[]>([
-    {
-      id: 0,
-      description: 'task 1',
-      completed: false,
-    },
-  ]);
+  const [todos, setTodos] = useState<Task[]>([]);
+  const [searchInput, setSearchInput] = useState('');
 
-  const addTodo: todoAction = newTodo => setTodos([...todos, newTodo]);
-  const handleNewTodo = (newTodo: Task) => {
-    addTodo(newTodo);
-    setInput('');
-  };
+  const addTodo = (description: string): void =>
+    setTodos([...todos, { id: todos.length, description, completed: false }]);
 
   const updateTodo: todoAction = updatedTodo =>
     setTodos(todos.map(todo => (todo.id === updatedTodo.id ? updatedTodo : todo)));
@@ -28,29 +20,24 @@ export const Home = () => {
   const deleteTodo = (deletedTodoId: number): void =>
     setTodos(todos.filter(todo => todo.id !== deletedTodoId));
 
+  const filteredTodos = todos.filter(({ description }) => description.includes(searchInput));
+
   return (
     <>
       <Grid justifyContent="center" container className={classes.container}>
         <Grid item className={classes.addTask}>
+          <AddTodo addTodo={addTodo} />
+        </Grid>
+        <Grid container justify="center" className={classes.search}>
           <TextField
-            value={input}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-            label="Add Task"
+            value={searchInput}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchInput(e.target.value)}
+            label="Search task"
           />
-          <Button
-            onClick={() =>
-              handleNewTodo({ id: todos.length, description: input, completed: false })
-            }
-            variant="contained"
-            color="primary"
-            className={classes.addButton}
-          >
-            Add
-          </Button>
         </Grid>
         <Container>
           <List>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <TodoContainer
                 key={todo.id}
                 deleteTodo={deleteTodo}
