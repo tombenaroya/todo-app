@@ -1,22 +1,19 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Todo as Task, todoAction } from '@/types/Todo';
 import { Checkbox, IconButton, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 
 interface Props {
   todo: Task;
-  updateTodo: todoAction;
+  updateTodoState: todoAction;
   openEdit: () => void;
   deleteTodo: (id: number) => void;
 }
 
-export const Todo: FC<Props> = ({ todo, updateTodo, openEdit, deleteTodo }) => {
+export const Todo: FC<Props> = ({ todo, updateTodoState, openEdit, deleteTodo }) => {
   return (
     <>
-      <Checkbox
-        checked={todo.completed}
-        onChange={() => updateTodo({ ...todo, completed: !todo.completed })}
-      />
+      <Checkbox color="primary" checked={todo.completed} onChange={() => updateTodoState(todo)} />
       <ListItemText primary={todo.description} />
       <ListItemSecondaryAction>
         <IconButton onClick={openEdit} color="primary" edge="end" aria-label="edit">

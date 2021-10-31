@@ -1,6 +1,6 @@
 import { TodoContainer } from '@/components/TodoContainer';
 import { Todo as Task, todoAction } from '@/types/Todo';
-import { Button, Container, Grid, List, TextField, Typography } from '@material-ui/core';
+import { Button, Container, Grid, List, TextField } from '@material-ui/core';
 import { ChangeEvent, useState } from 'react';
 import { useStyles } from './styles';
 
@@ -51,7 +51,12 @@ export const Home = () => {
         <Container>
           <List>
             {todos.map(todo => (
-              <TodoContainer key={todo.id} deleteTodo={deleteTodo} updateTodo={updateTodo} todo={todo} />
+              <TodoContainer
+                key={todo.id}
+                deleteTodo={deleteTodo}
+                updateTodo={updateTodo}
+                todo={todo}
+              />
             ))}
           </List>
         </Container>

@@ -15,13 +15,12 @@ export const TodoContainer: FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
   const classes = useStyles();
   const [edit, setEdit] = useState(false);
 
-  const handleUpdateTodo = (todo: Task) => {
+  const handleUpdateTodo = (todo: Task): void => {
     updateTodo(todo);
     setEdit(false);
   };
 
-  const updateTodoState = (todo: Task) => ({ ...todo, completed: !todo.completed });
-
+  const updateTodoState: todoAction = todo => updateTodo({ ...todo, completed: !todo.completed });
   const cancelEdit = () => setEdit(false);
   const openEdit = () => setEdit(true);
 
@@ -35,7 +34,7 @@ export const TodoContainer: FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
             <Todo
               todo={todo}
               openEdit={openEdit}
-              updateTodo={updateTodoState}
+              updateTodoState={updateTodoState}
               deleteTodo={deleteTodo}
             />
           )}
