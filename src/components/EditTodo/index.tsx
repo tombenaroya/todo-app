@@ -3,14 +3,14 @@ import { IconButton, ListItemSecondaryAction, TextField } from '@material-ui/cor
 import { Check, Close } from '@material-ui/icons';
 import React, { ChangeEvent, FC, useState } from 'react';
 
-interface Props {
+interface EditTodoProps {
   todo: Task;
   handleUpdateTodo: todoAction;
   cancelEdit: () => void;
 }
 
-export const EditTodo: FC<Props> = ({ todo, handleUpdateTodo, cancelEdit }) => {
-  const [input, setInput] = useState(todo.description);
+const EditTodo: FC<EditTodoProps> = ({ todo, handleUpdateTodo, cancelEdit }) => {
+  const [input, setInput] = useState<string>(todo.description);
 
   return (
     <>
@@ -22,7 +22,7 @@ export const EditTodo: FC<Props> = ({ todo, handleUpdateTodo, cancelEdit }) => {
       <ListItemSecondaryAction>
         <IconButton
           onClick={() => handleUpdateTodo({ ...todo, description: input })}
-          disabled={input === '' ? true : false}
+          disabled={input === ''}
           color="primary"
           edge="end"
         >
@@ -35,3 +35,5 @@ export const EditTodo: FC<Props> = ({ todo, handleUpdateTodo, cancelEdit }) => {
     </>
   );
 };
+
+export default EditTodo;

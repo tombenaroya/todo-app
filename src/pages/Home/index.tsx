@@ -1,32 +1,50 @@
-import { AddTodo } from '@/components/AddTodo';
+import TodoActions from '@/components/TodoActions';
 import { TodoContainer } from '@/components/TodoContainer';
-import { Todo as Task, todoAction } from '@/types/Todo';
-import { Container, Grid, List, TextField, Typography } from '@material-ui/core';
+import { filterActions, filterActionsFunctions, Todo as Task, todoAction } from '@/types/Todo';
+import { Container, Grid, List, TextField } from '@material-ui/core';
 import { ChangeEvent, FC, useState } from 'react';
 import { useStyles } from './styles';
+import { v4 as uuidv4 } from 'uuid';
 
 export const Home: FC = () => {
   const classes = useStyles();
 
   const [todos, setTodos] = useState<Task[]>([]);
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [filterAction, setFilterAction] = useState<filterActions>('All');
 
   const addTodo = (description: string): void =>
-    setTodos([...todos, { id: todos.length, description, completed: false }]);
+    setTodos([...todos, { id: uuidv4(), description, completed: false }]);
 
   const updateTodo: todoAction = updatedTodo =>
     setTodos(todos.map(todo => (todo.id === updatedTodo.id ? updatedTodo : todo)));
 
-  const deleteTodo = (deletedTodoId: number): void =>
+  const deleteTodo = (deletedTodoId: string): void =>
     setTodos(todos.filter(todo => todo.id !== deletedTodoId));
 
-  const filteredTodos = todos.filter(({ description }) => description.includes(searchInput));
+  const clearCompletedTodos = (): void =>
+    setTodos(todos.map(todo => ({ ...todo, completed: false })));
+
+  const filterTodos = (filterAction: (todo: Task) => boolean) => (todos: Task[]) =>
+    todos.filter(filterAction);
+
+  const filterByState = filterTodos(filterActionsFunctions[filterAction]);
+  const filteredTodosByState = filterByState(todos);
+
+  const searchedTodos = filteredTodosByState.filter(({ description }) =>
+    description.includes(searchInput)
+  );
 
   return (
     <>
       <Grid justifyContent="center" container className={classes.container}>
         <Grid item className={classes.addTask}>
-          <AddTodo addTodo={addTodo} />
+          <TodoActions
+            clearCompletedTodos={clearCompletedTodos}
+            filterAction={filterAction}
+            setFilterAction={setFilterAction}
+            addTodo={addTodo}
+          />
         </Grid>
         <Grid container justify="center" className={classes.search}>
           <TextField
@@ -37,7 +55,7 @@ export const Home: FC = () => {
         </Grid>
         <Container>
           <List>
-            {filteredTodos.map(todo => (
+            {searchedTodos.map(todo => (
               <TodoContainer
                 key={todo.id}
                 deleteTodo={deleteTodo}

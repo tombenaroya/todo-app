@@ -3,14 +3,14 @@ import { Todo as Task, todoAction } from '@/types/Todo';
 import { Checkbox, IconButton, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 
-interface Props {
+interface TodoProps {
   todo: Task;
   updateTodoState: todoAction;
   openEdit: () => void;
-  deleteTodo: (id: number) => void;
+  deleteTodo: (id: string) => void;
 }
 
-export const Todo: FC<Props> = ({ todo, updateTodoState, openEdit, deleteTodo }) => {
+const Todo: FC<TodoProps> = ({ todo, updateTodoState, openEdit, deleteTodo }) => {
   return (
     <>
       <Checkbox color="primary" checked={todo.completed} onChange={() => updateTodoState(todo)} />
@@ -31,3 +31,5 @@ export const Todo: FC<Props> = ({ todo, updateTodoState, openEdit, deleteTodo })
     </>
   );
 };
+
+export default Todo;

@@ -1,9 +1,11 @@
 import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { AssignmentTurnedIn } from '@material-ui/icons';
+import { FC } from 'react';
 import { useStyles } from './styles';
 
-export const Header = () => {
+const Header: FC = () => {
   const classes = useStyles();
+
   return (
     <>
       <AppBar position="fixed">
@@ -17,3 +19,5 @@ export const Header = () => {
     </>
   );
 };
+
+export default Header;

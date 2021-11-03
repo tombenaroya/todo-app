@@ -2,33 +2,33 @@ import { ListItem, Paper } from '@material-ui/core';
 import { useStyles } from './styles';
 import { Todo as Task, todoAction } from '@/types/Todo';
 import { FC, useState } from 'react';
-import { EditTodo } from '../EditTodo';
-import { Todo } from '../Todo';
+import EditTodo from '../EditTodo';
+import Todo from '../Todo';
 
-interface Props {
+interface TodoContainerProps {
   todo: Task;
   updateTodo: todoAction;
-  deleteTodo: (id: number) => void;
+  deleteTodo: (id: string) => void;
 }
 
-export const TodoContainer: FC<Props> = ({ todo, updateTodo, deleteTodo }) => {
+export const TodoContainer: FC<TodoContainerProps> = ({ todo, updateTodo, deleteTodo }) => {
   const classes = useStyles();
-  const [edit, setEdit] = useState(false);
+  const [isEditable, setIsEditable] = useState<boolean>(false);
 
   const handleUpdateTodo = (todo: Task): void => {
     updateTodo(todo);
-    setEdit(false);
+    setIsEditable(false);
   };
 
   const updateTodoState: todoAction = todo => updateTodo({ ...todo, completed: !todo.completed });
-  const cancelEdit = () => setEdit(false);
-  const openEdit = () => setEdit(true);
+  const cancelEdit = () => setIsEditable(false);
+  const openEdit = () => setIsEditable(true);
 
   return (
     <>
       <Paper className={classes.container}>
         <ListItem>
-          {edit ? (
+          {isEditable ? (
             <EditTodo cancelEdit={cancelEdit} todo={todo} handleUpdateTodo={handleUpdateTodo} />
           ) : (
             <Todo
